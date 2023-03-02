@@ -87,39 +87,53 @@ namespace AM.Core.Service
                     break;
             }
         }
-        public void ShowFlightDetails(int planeid)
+        public void ShowFlightDetails(Plane p)
         {
-            var flights=Flights.Where(f => f.MyPlane.PlaneId == planeid);
-            foreach (var flight in flights)
+            //Methode extension
+            Console.WriteLine(Flights.Where(f => f.MyPlane.PlaneId == p.PlaneId)
+                .Select (f => f.Destination + " " + f.FlightDate));
+
+            //2eme methode LINQ integre
+            var result = from f in Flights
+                         where f.MyPlane.PlaneId == p.PlaneId
+                         select new {f.Destination, f.FlightDate };
+            foreach(var f in result)
             {
-                Console.WriteLine(flight.Destination,flight.FlightDate);
+                Console.WriteLine(f.Destination+""+f.FlightDate);
             }
-       }
-        public int GetWeeklyFlightNumber(DateTime StartDate)
+           }
+        public int GetWeeklyFlightNumber(DateTime date)
         {
-            var EndDate = StartDate.AddDays(7);
-            var flights=Flights.Where(f=>f.FlightDate>=StartDate && f.FlightDate< EndDate);
-            return flights.Count();
+      
+            return Flights.Where(f=>f.FlightDate>=date && f.FlightDate< date.AddDays(7)).Count();
+       
         }
         public double GetDurationAverage(String destination)
         {
-            return Flights.Where(f => f.Destination == destination).Average(f => f.EstimatedDuration);
-            }
+            return Flights.Where(f => f.Destination == destination).Select(f => f.EstimatedDuration).Average();//ou bien sans select directemen,t .Average(f=>f.EstimatedDuration);
+        }
         public IList<Flight> SortFlights()
         {
             return Flights.OrderByDescending(f=>f.EstimatedDuration).ToList();  
         }
-        public IList<Passenger> GetThreeOlderTravellers()
+        public IList<Passenger> GetThreeOlderTravellers(Flight f)
         {
-            return Flights.SelectMany(f => f.passengers).OrderByDescending(p => p.Age).Take(3).ToList();
+            return f.passengers.OrderByDescending(p => p.Age).Take(3).ToList();
         }
         public void ShowGroupedFlights()
         {
-            var flights = Flights.GroupBy(f => f.Destination);
-            foreach (var flight in flights)
-            {
-                Console.WriteLine(flight);
+            var result = from f in Flights
+                         group f by f.Destination;
+            //Ienumerable<IGROUPING<String//cle,group//flight>>
+            foreach (var group in result) {
+                Console.WriteLine(group.Key);
+                foreach (var f in group)
+                    Console.WriteLine(f);
             }
+        }
+        public Passenger GetSeniorPassenger(IFlightService.GetScore meth)
+        {
+            return (Passenger)Flights.SelectMany(f => f.passengers.OrderByDescending(p => meth(p)).Take(1));
         }
 
     }
