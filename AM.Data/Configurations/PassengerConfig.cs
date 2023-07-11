@@ -23,8 +23,6 @@ namespace AM.Data.Configurations
             //    .HasValue<Passenger>(0)
             //    .HasValue<Staff>(2)
             //    .HasValue<Traveller>(1);
-            
-                
         }
     }
 }

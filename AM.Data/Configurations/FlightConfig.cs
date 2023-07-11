@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AM.Data.Configurations
 {
-    internal class FlightConfig : IEntityTypeConfiguration<Flight>
+    public class FlightConfig : IEntityTypeConfiguration<Flight>
     {
     public void Configure(EntityTypeBuilder<Flight> builder)
         {
@@ -20,6 +20,7 @@ namespace AM.Data.Configurations
                 .WithMany(p => p.flights)
                 .HasForeignKey(f => f.PlaneId)
                 .OnDelete(DeleteBehavior.SetNull);
+       
         }
     }
 }

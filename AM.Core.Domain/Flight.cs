@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace AM.Core.Domain
 {
+    public enum City
+    {
+        Tunis,
+        Marroc,
+        NewYork,
+        Algerie
+    }
     public class Flight
     {
         public string Destination { get; set; }
@@ -14,12 +21,12 @@ namespace AM.Core.Domain
         public DateTime FlightDate { get; set; }
         public int FlightId { get; set; }
         public DateTime EffectiveArrival { get; set; }
-         
         //Duration en terme de minutes 
         public int EstimatedDuration { get; set; }
         [ForeignKey("MyPlane")]
         public int? PlaneId { get; set; }
         //ou bien :[ForeighKey("PlaneId")]
+        public string? Pilot { get; set; }
         
         public virtual Plane? MyPlane { get; set; } //virtual: activer le lazyloadig
         //public IList<Passenger> passengers { get; set; }

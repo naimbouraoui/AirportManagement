@@ -2,6 +2,8 @@
 
 using AM.Core.Domain;
 using AM.Data;
+using AM.Core.Service;
+using AM.Core.Interfaces;
 
 //Console.WriteLine("Hello, World!");
 ////TP1.Question7
@@ -89,6 +91,32 @@ AMContext ctxt= new AMContext(); //permet d'acceder la base
 //Console.WriteLine(fl.MyPlane);
 
 //tp5 q11
-Flight flightFromDB = (Flight)ctxt.Find(typeof(Flight), 2); //extraire de la bd
-Console.WriteLine(flightFromDB);
-Console.WriteLine(flightFromDB.MyPlane);  
+//Flight flightFromDB = (Flight)ctxt.Find(typeof(Flight), 2); //extraire de la bd
+//Console.WriteLine(flightFromDB);
+//Console.WriteLine(flightFromDB.MyPlane);  
+Plane p = new Plane() {
+    Capacity = 1 ,
+    ManufactureDate = new DateTime(2000, 1, 1),
+    MyPlaneType=PlaneType.Boeing
+};
+//IRepository<Plane> repository=new Repository<Plane>(ctxt);
+//IPlaneService planeService = new PlaneService(repository);
+//planeService.Add(p);
+Flight fl = new Flight()
+{
+    Destination = "Paris",
+    Departure = "Tunis",
+    FlightDate = new DateTime(2022, 1, 1),
+    EffectiveArrival = new DateTime(2022, 1, 2),
+    EstimatedDuration = 120,
+    MyPlane = p
+
+};
+//IRepository<Flight> repository1 = new Repository<Flight>(ctxt);
+//IFlightService flightService = new FlightService(repository1);
+//flightService.Add(fl);
+//TP6 Question12
+AMContext aMContext = new AMContext();
+IUnitOfWork unitOfWork=new UnitOfWork(aMContext);
+//IPlaneService planeService1 = new PlaneService(unitOfWork);
+IFlightService flightService1 = new FlightService(unitOfWork);

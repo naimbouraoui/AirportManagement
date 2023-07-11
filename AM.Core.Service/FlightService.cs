@@ -1,9 +1,19 @@
 ﻿using AM.Core.Domain;
+using AM.Core.Interfaces;
 
 namespace AM.Core.Service
 {
-    public class FlightService : IFlightService
+    public class FlightService : Service<Flight>,IFlightService 
     {
+        //IRepository<Flight> _flightRepository;
+        //readonly IUnitOfWork unitOfWork;
+        public FlightService(IUnitOfWork unitOfWork):base(unitOfWork)
+        {
+            //this.unitOfWork = unitOfWork;
+            //_flightRepository = unitOfWork.GetRepository<Flight>();
+            //tp6.15
+            Flights = GetAll();
+        }
         public IList<Flight> Flights { get; set; }
         public IList<DateTime> GetFlightDates(String Destiation)
         {
@@ -138,6 +148,24 @@ namespace AM.Core.Service
             //return (Passenger)Flights.SelectMany(f => f.passengers.OrderByDescending(p => meth(p)).Take(1));
             return null;
         }
+
+        //public void Add(Flight f)
+        //{
+        //    _flightRepository.Add(f);
+        //    unitOfWork.Save();
+        //}
+
+        //public void Remove(Flight f)
+        //{
+        //    _flightRepository.Delete(f.FlightId);
+        //    unitOfWork.Save();
+        //}
+
+        //public IList<Flight> GetAll()
+        //{
+        //    return _flightRepository.GetAll();
+
+        //}
 
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace AM.Core.Domain
 {
+    //[DataType(DataType.MultilineText)]
     //2eme methode [Table("Staffs")]
     public class Staff : Passenger
     {
